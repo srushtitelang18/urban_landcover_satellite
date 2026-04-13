@@ -1,0 +1,11 @@
+# Ignore large files
+*.tif
+*.pth
+*.npy
+
+# Ignore folders
+tiles/
+predictions/
+
+# Python cache
+__pycache__/
