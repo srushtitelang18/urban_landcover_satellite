@@ -1,1 +1,29 @@
-{"nbformat":4,"nbformat_minor":0,"metadata":{"colab":{"provenance":[],"authorship_tag":"ABX9TyO2vx0hK8pXTWYXXes/gANN"},"kernelspec":{"name":"python3","display_name":"Python 3"},"language_info":{"name":"python"}},"cells":[{"cell_type":"code","execution_count":null,"metadata":{"id":"WRjAq28roPMo"},"outputs":[],"source":["import rasterio\n","import numpy as np\n","import os\n","\n","IMG_PATH = \"/content/drive/MyDrive/Sentinel_AI_Project.tif\"\n","MASK_PATH = \"/content/drive/MyDrive/training_mask_osm.tif\"\n","\n","# Save tiles in Colab (temporary but fine for training)\n","os.makedirs(\"tiles/images\", exist_ok=True)\n","os.makedirs(\"tiles/masks\", exist_ok=True)\n","\n","img = rasterio.open(IMG_PATH).read()\n","mask = rasterio.open(MASK_PATH).read(1)\n","\n","tile_size = 128\n","count = 0\n","\n","for y in range(0, mask.shape[0] - tile_size, tile_size):\n","    for x in range(0, mask.shape[1] - tile_size, tile_size):\n","\n","        img_tile = img[:, y:y+tile_size, x:x+tile_size]\n","        mask_tile = mask[y:y+tile_size, x:x+tile_size]\n","\n","        np.save(f\"tiles/images/img_{count}.npy\", img_tile)\n","        np.save(f\"tiles/masks/mask_{count}.npy\", mask_tile)\n","\n","        count += 1\n","\n","print(\"✅ Tiles created:\", count)"]}]}
+import rasterio
+import numpy as np
+import os
+
+IMG_PATH = "/content/drive/MyDrive/Sentinel_AI_Project.tif"
+MASK_PATH = "/content/drive/MyDrive/training_mask_osm.tif"
+
+# Save tiles in Colab (temporary but fine for training)
+os.makedirs("tiles/images", exist_ok=True)
+os.makedirs("tiles/masks", exist_ok=True)
+
+img = rasterio.open(IMG_PATH).read()
+mask = rasterio.open(MASK_PATH).read(1)
+
+tile_size = 128
+count = 0
+
+for y in range(0, mask.shape[0] - tile_size, tile_size):
+    for x in range(0, mask.shape[1] - tile_size, tile_size):
+
+        img_tile = img[:, y:y+tile_size, x:x+tile_size]
+        mask_tile = mask[y:y+tile_size, x:x+tile_size]
+
+        np.save(f"tiles/images/img_{count}.npy", img_tile)
+        np.save(f"tiles/masks/mask_{count}.npy", mask_tile)
+
+        count += 1
+
+print("✅ Tiles created:", count)
